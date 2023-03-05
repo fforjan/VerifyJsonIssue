@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace JsonIssue;
 
 public class BaseClass : VerifyMSTest.VerifyBase {
@@ -13,24 +15,14 @@ public class UnitTest1 :  BaseClass
     }
 
     [TestMethod]
-    public async Task SimpleVerify()
+    public async Task VerifyJson()
     {
-        await Verify("Hello world");
+        await VerifyJson(File.ReadAllText(getFilename()));
+
+        string getFilename([CallerFilePath] string currentFile = "") {
+            return Path.ChangeExtension( currentFile, "VerifyJson.verified.json");
+        }
     }
 
 
-    [TestMethod]
-    public async Task GeneratorVerify()
-    {
-        var json  = "{ 'HelloWord': true}";
-        var log = "some log";
-        await VerifyJson(json);
-        await Verify(log);
-    }
-
-    [TestMethod]
-    public async Task AnotherSimpleVerify()
-    {
-        await Verify("Hello world");
-    }
 }
